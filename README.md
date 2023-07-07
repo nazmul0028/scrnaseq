@@ -14,6 +14,12 @@ E_11_13_combined_2 <-FindClusters(object = E_11_13_combined_1, graph.name = "RNA
 cluster <- DimPlot(object=E_11_13_combined_2, reduction="umap", label=TRUE)
 cluster
 ```
+<h3>Split / group cluster on the basis of treatment</h3>
+
+```   r
+cluster_by_treatment <- DimPlot(E13_1, label = F, repel = T, pt.size = 0.5, group.by = "treatment", cols = c("#E04b41", "#41b0e0")) + ggtitle("Unsupervised clustering")
+cluster_by_treatment
+```
 
 <h3>Change the name of cluster created by seurat</h3>
 
