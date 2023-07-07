@@ -1,5 +1,6 @@
 # Codes for single cell RNA sequencing
 <h3>Make cluster</h3>
+
 ```r
 object <- FindNeighbors(object = object, dims = 1:40)
 object <-FindClusters(object = object,graph.name = "RNA_snn")
@@ -7,6 +8,7 @@ object <- RunUMAP(object = object,graph = "RNA_snn")
 DimPlot(object = object,reduction = "umap", group.by = "orig.ident")
 ```
 <h3>Modify cluster resulution on the basis of need</h3>
+
 ```r
 E_11_13_combined_2 <-FindClusters(object = E_11_13_combined_1, graph.name = "RNA_snn", resolution = 0.18)
 cluster <- DimPlot(object=E_11_13_combined_2, reduction="umap", label=TRUE)
