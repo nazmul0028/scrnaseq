@@ -34,6 +34,7 @@ markers.to.plot <- c("Col1a1", "Col2a1", "Sox11", "Pax1", "Tbx3", "CACYBP", "GNL
     "CD8A", "MS4A1", "CD79A", "MIR155HG", "NME1", "FCGR3A", "VMO1", "CCL2", "S100A9", "HLA-DQA1",
     "GPR183", "PPBP", "GNG11", "HBA2", "HBB", "TSPAN13", "IL3RA", "IGJ", "PRSS57")
 #DotPlot(immune.combined, features = markers.to.plot, cols = c("blue", "red"), dot.scale = 8, split.by = "stim") +
-DotPlot(E_11_13_combined_3, features = markers.to.plot, cols = c("blue", "red"), dot.scale = 8, col.min=-2, col.max=2, scale.min = 0, scale.max = 100) +
+DotPlot(E_11_13_combined_3, features = markers.to.plot, cols = c("blue", "red"), dot.scale = 8,
+col.min=-2, col.max=2, scale.min = 0, scale.max = 100) +
     RotatedAxis()
 ```
