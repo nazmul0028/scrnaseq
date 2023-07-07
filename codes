@@ -1,3 +1,8 @@
+<html>
+<head>
+
+</head>
+<body>
 <p>Change name of cluster</p>
 <code>
 Idents(E_11_13_combined_2) <- "RNA_snn_res.0.18"
@@ -6,3 +11,5 @@ E_11_13_combined_3 <- RenameIdents(E_11_13_combined_2, `0` = "CD14 Mono", `1` = 
     `10` = "Mk", `11` = "pDC", `12` = "Eryth", `13` = "Mono/Mk Doublets")
 DimPlot(E_11_13_combined_3, label = TRUE)
 </code>
+</body>
+</html>
