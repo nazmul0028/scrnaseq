@@ -88,6 +88,7 @@ col.min=-2, col.max=2, scale.min = 0, scale.max = 100) +
     RotatedAxis()
 ```
 <h3>Quick Check genes expression at each cluster, Cluster 4 is the myogenic</h3>
+
 ```
 Idents(E_all_combined_1) <-"RNA_snn_res.0.15"
 levels(E_all_combined_1)
