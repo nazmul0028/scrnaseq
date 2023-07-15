@@ -99,6 +99,19 @@ p2 <- VlnPlot(E_all_combined_1, c("Scx","Msx","Runx2","Msx2","Dlx5","Zfp423","Pd
 p2
 ```
 
+<h3>Using featurePLot to visulized the gene expression among all clusters</h3>
+
+```r
+p4<-FeaturePlot(E13_1, features = c("Zfp423","Pparg"), split.by = "treatment", min.cutoff = 0)
+
+p3<-FeaturePlot(E13_1, features = c("Pdgfra","Tcf7l2"),split.by = "treatment")
+
+
+ggsave(plot = p3, "E13_mRNA_CT_HFD_Norm_Scale_PC100_res0.2_cluster_split_featureplot_fibrogenic.tiff", dpi=600, width=10, height=10, path = "cluster_umap", limitsize = TRUE)
+
+ggsave(plot = p4, "E13_mRNA_CT_HFD_Norm_Scale_PC100_res0.2_cluster_split_featureplot_adipogenic.tiff", dpi=600, width=10, height=10, path = "cluster_umap",
+
+```
 
 <h3>Subset Cluster</h3>
 ```r
