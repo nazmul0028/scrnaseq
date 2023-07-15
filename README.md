@@ -1,5 +1,6 @@
 # Codes for single cell RNA sequencing
 <h3>Install Packages</h3>
+
 ```r
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -10,7 +11,9 @@ BiocManager::install("MAST")
 
 install.packages(c("dplyr","Seurat","patchwork","data.table","glmGamPoi","sctransform"))
 ```
+
 <h3>Call Library</h3>
+
 ```r
 library(dplyr)
 library(Seurat)
@@ -24,6 +27,7 @@ library(DESeq2)
 library(MAST)
 ```
 <h3>Call Database and check info</h3>
+
 ```r
 E_all_combined <- readRDS("/media/data/naz/scmRNA_data/E_all_combined/E_all_combined_for_clustering.rds")
 head(colnames(E_all_combined ))
@@ -105,6 +109,7 @@ saveRDS(adipogenic_cluster, file = "fibro_adipogenic_cluster/adipogenic_cluster.
 
 <h1>Pseudotiming</h1>
 <h3>Call Packages</h3>
+
 ```r
 library(monocle3)
 library(SeuratWrappers)
@@ -114,6 +119,7 @@ set.seed(1234)
 ```
 
 <h3>Make Pseudotiming</h3>
+
 ```r
 myogenic_cluster<- readRDS("/media/data/Naz/data_analysis/E13_RNA_data/RDSdata/subcluster/fibrogenic_cluster.rds")
 E11.5_myogenic_Diet <- DietSeurat(myofibro_cluster, counts=TRUE, data=TRUE, graph="umap", dimreducs = "umap")
@@ -134,6 +140,7 @@ plot_cells(cds = E11.5_myogenic_Diet.cds, label_cell_groups = FALSE, color_cells
 plot_cells(cds = E11.5_myogenic_Diet.cds, label_cell_groups = FALSE, color_cells_by = "pseudotime", show_trajectory_graph = TRUE, label_branch_points = FALSE, label_leaves = FALSE, label_roots = TRUE, cell_size = 0.5)+theme(axis.title = element_text(size=8))+theme(axis.text = element_text(color='black', size=8))+theme(legend.title = element_text(size=8)+theme(legend.text = element_text(size = 8)))+theme(axis.line.x = element_line(size=0.65))+theme(axis.line.y = element_line(size=0.55))+theme(axis.ticks.x = element_line(size=0.65))+theme(axis.ticks.y = element_line(size = 0.65))+theme(legend.title = element_text(size = 8))+theme(legend.text = element_text(size = 8))
 ```
 <h3>1st</h3>
+
 ```r
 E11.5_myogenic_Diet.cds <- estimate_size_factors(E11.5_myogenic_Diet.cds)
 E11.5_myogenic_Diet.cds@rowRanges@elementMetadata@listData[['gene_short_name']] <- rownames(E11.5_myogenic_Diet.cds[['RNA']])
@@ -152,6 +159,7 @@ saveRDS(E11.5_myogenic_Diet.cds,"Monocle3.E11.5_myogenic_Diet.KEEPumap.rds")
 ```
 
 <h3>3rd</h3>
+
 ```r
 
 
@@ -195,6 +203,7 @@ RP_genes.module_cds <- E11.5_myogenic_2.cds[rowData(E11.5_myogenic_2.cds)$gene_s
 plot_genes_in_pseudotime(RP_genes.module_cds,color_cells_by="ident")+theme(axis.title = element_text(size=8))+theme(axis.text = element_text(color='black', size=8))+theme(legend.title = element_text(size=8)+theme(legend.text = element_text(size = 8)))+theme(axis.line.x = element_line(size=0.55))+theme(axis.line.y = element_line(size=0.55))+theme(axis.ticks.x = element_line(size=0.55))+theme(axis.ticks.y = element_line(size = 0.55))+ theme(strip.text = element_text(size=8, face="bold.italic"))
 ```
 <h3>5th</h3>
+
 ```r
 RP_genes.module <- c("Mef2c")
 
