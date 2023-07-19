@@ -99,6 +99,20 @@ p2 <- VlnPlot(E_all_combined_1, c("Scx","Msx","Runx2","Msx2","Dlx5","Zfp423","Pd
 p2
 ```
 
+<h3>Find conserved gene from targeted cluster</h3>
+
+```
+cluster5_conserved_markers <- FindConservedMarkers(E_all_combined_2,
+                              ident.1 = 5,
+                     	      grouping.var = "orig.ident",
+                              only.pos = TRUE,
+		              logfc.threshold = 0.25)
+```
+
+
+
+
+
 <h3>Using featurePLot to visulized the gene expression among all clusters</h3>
 
 ```r
