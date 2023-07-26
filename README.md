@@ -136,6 +136,154 @@ saveRDS(adipogenic_cluster, file = "fibro_adipogenic_cluster/adipogenic_cluster.
 ```
 
 
+<h3>GO Analysis</h3>
+
+```r
+library(clusterProfiler)
+library(DOSE)
+library(ggplot2)
+library(enrichplot)
+library(org.Mm.eg.db)
+library(stringr)
+set.seed(1234)
+```
+
+```r
+PsDEs <- read.csv("/media/naz/YAOGAO/R_analysis/GO/Up/myogenic_cluster7/PS.DEs_change_biggerthan10_p0.05.csv")  
+FoldChangePsDEs <- PsDEs[,2]
+names(FoldChangePsDEs) <- as.character(PsDEs[,1])
+FoldChangePsDEs <- sort(FoldChangePsDEs, decreasing = TRUE)
+```
+
+
+```r
+ convertIDs <- function( ids, fromKey, toKey, db, ifMultiple=c( "putNA", "useFirst" ) ) {
+   stopifnot( inherits( db, "AnnotationDb" ) )
+   ifMultiple <- match.arg( ifMultiple )
+   suppressWarnings( selRes <- AnnotationDbi::select( 
+      db, keys=ids, keytype=fromKey, columns=c(fromKey,toKey) ) )
+   if( ifMultiple == "putNA" ) {
+      duplicatedIds <- selRes[ duplicated( selRes[,1] ), 1 ]   
+      selRes <- selRes[ ! selRes[,1] %in% duplicatedIds, ] }
+   return( selRes[ match( ids, selRes[,1] ), 2 ] )
+}
+
+idPsDEs <- names(FoldChangePsDEs)
+PsDEs$ENTREZID <- convertIDs(idPsDEs, "SYMBOL","ENTREZID", org.Mm.eg.db )
+head(PsDEs, 4)
+```
+
+```r
+AllDEs <- read.csv("/media/naz/YAOGAO/R_analysis/GO/Up/myogenic_cluster7/All.csv")
+FoldChangeAllDEs <- AllDEs[,2] 
+names(FoldChangeAllDEs) <- as.character(AllDEs[,1])
+FoldChangeAllDEs <- sort(FoldChangeAllDEs, decreasing = TRUE)
+
+idAllDEs <- names(FoldChangeAllDEs)
+AllDEs$ENTREZID <- convertIDs(idAllDEs, "SYMBOL","ENTREZID", org.Mm.eg.db )
+head(AllDEs, 4)
+```
+
+
+```r
+GOPsDEs.BP <- enrichGO(PsDEs$ENTREZID,   
+                    universe      = AllDEs$ENTREZID,
+                    OrgDb         = 'org.Mm.eg.db',
+                    ont           = "BP",
+                    pAdjustMethod = "BH",
+                    pvalueCutoff  = 0.05,
+                    qvalueCutoff  = 0.05,
+                    readable      = TRUE)
+
+dim(GOPsDEs.BP)
+
+
+
+
+GOPsDEs.filter.BP<-simplify(GOPsDEs.BP,cutoff = 0.7,
+                         by = "p.adjust",
+                         select_fun = min)
+dim(GOPsDEs.filter.BP)
+
+head(GOPsDEs.filter.BP, 112)
+
+write.csv(GOPsDEs.filter.BP, "HFDvsCON.GOPsDEs.filter.BP.csv")
+```
+
+```r
+a <- c("nucleoside diphosphate phosphorylation","cytoplasmic translation")
+
+p1 <- barplot(GOPsDEs.filter.BP, showCategory = a,font.size=8, x = "GeneRatio")+theme(axis.title = element_text(size=8))+theme(axis.text = element_text(color="black", size=8))+theme(legend.title = element_text(size=8)+theme(legend.text = element_text(size = 8)))+theme(legend.key.width = unit(0.2,"cm"))+theme(legend.key.height = unit(0.3,"cm"))+theme(legend.text = element_text(size = 6))+theme(legend.title = element_text(size = 6))+xlab("GeneRatio")+ggtitle("HFD vs CON")+theme(plot.title = element_text(size=8,face = "bold"))+theme(axis.title = element_text(size = 8))+theme(axis.text.x = element_text(angle = 30, size=6))
+p1
+
+ggsave("DC1.GO.tiff", width=3, height=2.5, dpi=300, p1)
+```
+
+```r
+p1 <- dotplot(GOPsDEs.filter.BP, showCategory = a,font.size=8, x = "GeneRatio")+theme(axis.title = element_text(size=8))+theme(axis.text = element_text(color="black", size=8))+theme(legend.title = element_text(size=8)+theme(legend.text = element_text(size = 8)))+theme(legend.key.width = unit(0.2,"cm"))+theme(legend.key.height = unit(0.3,"cm"))+theme(legend.text = element_text(size = 6))+theme(legend.title = element_text(size = 6))+xlab("GeneRatio")+ggtitle("HFD vs CON")+theme(plot.title = element_text(size=8,face = "bold"))+theme(axis.title = element_text(size = 8))+theme(axis.text.x = element_text(angle = 30, size=6))
+p1
+```
+
+
+
+
+
+#gseaGO
+```r
+AllDEs <- read.csv("/media/naz/YAOGAO/R_analysis/GO/Up/myogenic_cluster7/All.csv")
+FoldChangeAllDEs <- AllDEs[,2]
+names(FoldChangeAllDEs) <- as.character(AllDEs[,1])
+FoldChangeAllDEs <- sort(FoldChangeAllDEs, decreasing = TRUE)
+
+idAllDEs <- names(FoldChangeAllDEs)
+AllDEs$ENTREZID <- convertIDs(idAllDEs, "SYMBOL","ENTREZID", org.Mm.eg.db )
+head(AllDEs, 4)
+
+logFoldChangeAllDEs <- AllDEs[,2]
+names(logFoldChangeAllDEs) <- as.character(AllDEs[,3])
+logFoldChangeAllDEs <- sort(logFoldChangeAllDEs, decreasing = TRUE)
+
+head(logFoldChangeAllDEs, n=10)
+
+GSEAAllDEs.GO.BP <- gseGO(geneList=logFoldChangeAllDEs,
+               keyType="ENTREZID",
+               OrgDb = org.Mm.eg.db,
+               ont = "BP",
+               minGSSize = 10,
+               maxGSSize = 500,
+               pvalueCutoff = 0.05,
+               verbose = FALSE,
+               eps = 0)
+
+head(GSEAAllDEs.GO.BP, 24)
+dim(GSEAAllDEs.GO.BP)
+```
+
+```r
+GSEAAllDEs.GO.BP.filter<-simplify(GSEAAllDEs.GO.BP,cutoff = 0.7,
+                       by = "p.adjust",
+                       select_fun = min)
+
+
+dim(GSEAAllDEs.GO.BP.filter)
+```
+
+```r
+GSEAAllDEs.GO.BP.filter.SYMBOL<-setReadable(GSEAAllDEs.GO.BP.filter,OrgDb = org.Mm.eg.db,keyType="ENTREZID")
+
+head(GSEAAllDEs.GO.BP.filter.SYMBOL)
+```
+```r
+write.csv(GSEAAllDEs.GO.BP.filter.SYMBOL, "GSEAAllDEs.GO.BP.filter.CSV")
+```
+
+```r
+gseaplot2(GSEAAllDEs.GO.BP.filter.SYMBOL, geneSetID = 1, title = GSEAAllDEs.GO.BP.filter.SYMBOL$Description[1])
+```
+
+
+
+
 <h1>Pseudotiming</h1>
 <h3>Call Packages</h3>
 
