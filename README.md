@@ -286,7 +286,8 @@ gseaplot2(GSEAAllDEs.GO.BP.filter.SYMBOL, geneSetID = 1, title = GSEAAllDEs.GO.B
 
 <h1>Pseudotiming</h1>
 <h3>Call Packages</h3>
-<p>https://githubmemory.com/repo/satijalab/seurat-wrappers/issues/100 </p>
+<p> Use following link to install seurat-wrapper</p>
+<a href="">https://githubmemory.com/repo/satijalab/seurat-wrappers/issues/100 </a>
 
 
 ```r
